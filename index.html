@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>每日金句</title>
+    <link rel="stylesheet" href="./assets/style/quotes.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- <header>
+            <h1>每日金句</h1>
+            <p>每一天，一句话的力量</p>
+        </header> -->
+        
+        <div class="quote-wrapper">
+            <div id="quote-container">
+                <!-- 金句内容将通过JavaScript动态插入 -->
+                <p class="loading-message">正在加载金句...</p>
+            </div>
+        </div>
+        
+        <button id="refresh-btn" class="refresh-btn">换一句</button>
+        
+        <!-- <footer>
+            <p>&copy; 2023 每日金句 - 激励你的每一天</p>
+        </footer> -->
+    </div>
+
+    <!-- 详情页 -->
+    <div id="detail-page" class="detail-page">
+        <button id="back-btn" class="back-btn" aria-label="返回"></button>
+        <div id="detail-background" class="detail-background"></div>
+        <div class="detail-content">
+            <h1 id="detail-title" class="detail-title"></h1>
+            <div id="detail-text" class="detail-text"></div>
+        </div>
+    </div>
+
+    <!-- Canvas背景 -->
+    <div class="background-canvas active" id="background-canvas-1">
+        <canvas></canvas>
+    </div>
+    <div class="background-canvas" id="background-canvas-2">
+        <canvas></canvas>
+    </div>
+    <div class="background-canvas" id="background-canvas-3">
+        <canvas></canvas>
+    </div>
+
+    <script src="./assets/script/quotes.js" type="module"></script>
+    <script src="assets/script/background.js"></script>
+</body>
+</html>

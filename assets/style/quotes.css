@@ -1,0 +1,397 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* 隐藏滚动条但保留滚动功能 */
+html, body {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+}
+
+html::-webkit-scrollbar, 
+body::-webkit-scrollbar,
+.detail-page::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+}
+
+body {
+    font-family: 'Noto Sans SC', 'Microsoft YaHei', sans-serif;
+    background-color: #f5f5f5;
+    color: #333;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    overflow-x: hidden;
+    position: relative;
+}
+
+.container {
+    max-width: 1000px;
+    width: 100%;
+    padding: 20px;
+    position: relative;
+    z-index: 1;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+h1 {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+    color: #2c3e50;
+}
+
+/* 外壳容器样式 */
+.quote-wrapper {
+    min-height: 400px;
+    margin-bottom: 30px;
+    position: relative;
+}
+
+@media (max-width: 768px) {
+    .quote-wrapper {
+        min-height: 500px;
+    }
+}
+
+#quote-container {
+    width: 100%;
+    height: 100%;
+}
+
+.quote-card {
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 30px;
+    opacity: 0;
+    transition: opacity 0.8s ease;
+}
+
+.quote-card.fade-in {
+    opacity: 1;
+}
+
+@media (min-width: 768px) {
+    .quote-card {
+        flex-direction: row;
+        height: 400px;
+    }
+}
+
+.quote-image {
+    flex: 1;
+    overflow: hidden;
+    max-height: 300px;
+    cursor: pointer;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@media (min-width: 768px) {
+    .quote-image {
+        max-height: none;
+    }
+}
+
+.quote-image img {
+    width: 80%;
+    height: 80%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+    border-radius: 10px;
+}
+
+.image-author {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 2;
+}
+
+.quote-image:hover .image-author {
+    opacity: 1;
+}
+
+.quote-image:hover img {
+    transform: scale(1.05);
+}
+
+.quote-image::after {
+    content: '点击查看详情';
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.quote-image:hover::after {
+    opacity: 1;
+}
+
+.quote-content {
+    flex: 1;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+h2 {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+    color: #3498db;
+}
+
+.quote-text {
+    font-size: 1.25rem;
+    line-height: 1.8;
+    margin-bottom: 20px;
+}
+
+.quote-author {
+    font-size: 1rem;
+    font-style: italic;
+    text-align: right;
+    margin-top: 10px;
+    opacity: 0.8;
+    align-self: flex-end;
+}
+
+.refresh-btn {
+    display: block;
+    margin: 0 auto;
+    padding: 12px 30px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 30px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.refresh-btn:hover {
+    background-color: #2980b9;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+footer {
+    margin-top: 40px;
+    text-align: center;
+    color: #7f8c8d;
+    font-size: 0.9rem;
+}
+
+.loading-message {
+    text-align: center;
+    padding: 20px;
+    font-size: 1.2rem;
+    color: #7f8c8d;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+}
+
+/* 详情页样式 */
+.detail-page {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+    overflow: hidden;
+}
+
+.detail-page.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.detail-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    filter: brightness(0.3);
+    transform: scale(1.1);
+    transition: transform 0.8s ease;
+    z-index: 1;
+}
+
+.detail-page.active .detail-background {
+    transform: scale(1);
+}
+
+.detail-content {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 80px 20px 40px;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.5s ease 0.3s, transform 0.5s ease 0.3s;
+    max-height: 100vh;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+}
+
+.detail-content::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+}
+
+.detail-page.active .detail-content {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.detail-title {
+    font-size: 2.5rem;
+    margin-bottom: 30px;
+    text-align: center;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.7);
+    color: white;
+}
+
+.detail-text {
+    font-size: 1.2rem;
+    line-height: 1.8;
+    margin-bottom: 30px;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+    width: 100%;
+    position: relative;
+}
+
+/* 不同对齐方式的文本样式 */
+.text-justify {
+    text-align: justify;
+}
+
+.text-justify p {
+    text-indent: 2em; /* 两端对齐时有缩进 */
+    margin-bottom: 1.5em;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.text-center p {
+    text-indent: 0; /* 居中对齐时无缩进 */
+    margin-bottom: 1.5em;
+}
+
+/* 出处样式 */
+.quote-source {
+    font-size: 1rem;
+    font-style: italic;
+    text-align: right;
+    margin-top: 10px;
+    margin-bottom: 0;
+    opacity: 0.8;
+    text-indent: 0 !important; /* 取消首行缩进，确保任何情况下都靠右对齐 */
+    align-self: flex-end;
+    width: 100%;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.back-btn {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 1002;
+    background-color: rgba(255, 255, 255, 0.2);
+    color: white;
+    border: none;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    backdrop-filter: blur(5px);
+    opacity: 0;
+    transform: translateX(-20px);
+    transition: opacity 0.5s ease 0.5s, transform 0.5s ease 0.5s, background-color 0.3s;
+}
+
+.detail-page.active .back-btn {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.back-btn:hover {
+    background-color: rgba(255, 255, 255, 0.4);
+}
+
+.back-btn::before {
+    content: '';
+    width: 15px;
+    height: 15px;
+    border-top: 3px solid white;
+    border-left: 3px solid white;
+    transform: rotate(-45deg);
+    margin-left: 5px;
+}
+
+.background-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+
+.background-canvas.active {
+    opacity: 1;
+} 
